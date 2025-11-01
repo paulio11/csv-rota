@@ -1,0 +1,33 @@
+.wipWarning {
+  color: red;
+}
+
+.weekForm {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.empForm {
+  margin-top: 16px;
+}
+
+.dayTable {
+  width: 100%;
+}
+
+.dayTable tr td {
+  padding: 5px;
+}
+
+.dayTable tr:nth-child(even) {
+  background-color: #ebebeb;
+}
+
+.nameTd {
+  font-weight: bold;
+}
+
+.shiftTimeTd {
+  text-align: right;
+}

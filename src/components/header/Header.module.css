@@ -1,0 +1,13 @@
+.header {
+  padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.reloadBtn{
+  font-size: 30px;
+  cursor: pointer;
+  margin-left: 16px;
+}

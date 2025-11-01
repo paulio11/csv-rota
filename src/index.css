@@ -1,0 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&display=swap");
+
+* {
+  font-family: "Roboto", sans-serif;
+  color: #282828;
+  font-size: 14px;
+  line-height: 1.5rem;
+}
+
+/* Bootstrap overrides */
+
+:root {
+  --primary-color: #326bb7;
+}
+
+.btn-primary {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+}
+
+.btn-primary:hover {
+  background-color: #234c82 !important;
+  border-color: #234c82 !important;
+}
+
+/* Headings */
+
+h1 {
+  color: white !important;
+  font-weight: bold !important;
+  font-size: 32px !important;
+  padding: 32px 16px 16px;
+}
+
+h2 {
+  font-weight: bold !important;
+  font-size: 16px !important;
+}
+
+/* Semantic elements */
+
+section {
+  border-radius: 4px;
+  border: 1px solid #dfdfdf;
+  margin: 0 16px 16px;
+  padding: 16px;
+  background-color: white;
+}
+
+/* Buttons */
+
+button {
+  border-radius: 4px !important;
+  font-weight: bold !important;
+}
+
+button i {
+  color: white;
+}
+
+/* App.jsx Classes */
+
+.background {
+  background: linear-gradient(
+    180deg,
+    #326bb7 120px,
+    #326bb7 120px,
+    white 120px
+  );
+}
