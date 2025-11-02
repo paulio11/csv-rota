@@ -108,14 +108,13 @@ const Rota = () => {
               Next <i className="fas fa-arrow-right"></i>
             </Button>
           </div>
-
           <div className={styles.empForm}>
             <Form.Select
               onChange={(e) => setSelectedEmp(e.target.value)}
               value={selectedEmp}
             >
               <option value="">Everyone</option>
-              {employees.slice(2).map((emp, i) => (
+              {employees.map((emp, i) => (
                 <option key={i}>{emp.name}</option>
               ))}
             </Form.Select>
@@ -142,7 +141,7 @@ const Rota = () => {
 
         if (!shifts.length)
           return (
-            <section>
+            <section key={day}>
               <h2>{day}</h2>
               <span>No shift today</span>
             </section>
