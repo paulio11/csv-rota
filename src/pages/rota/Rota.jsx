@@ -13,6 +13,9 @@ import Papa from "papaparse";
 // Bootstrap
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Badge from "react-bootstrap/Badge";
+// Misc
+import { team } from "../../data/team";
 
 const Rota = () => {
   // State variables
@@ -21,8 +24,18 @@ const Rota = () => {
   const [selectedEmp, setSelectedEmp] = useState("");
   const [currentWeekStart, setCurrentWeekStart] = useState(getCurrentSunday());
 
+  // Team roles
+  const bakers = ["Karen Bews", "Jay Nokes", "Dylan Sneddon"];
+  const teamLeaders = [
+    "Paul Young",
+    "Benjamin Craggs",
+    "Elida Walton",
+    "Louise Lewis",
+  ];
+  const storeManager = "Tammy Robson";
+
   // Rota CSV file
-  const rotaFileName = `data/Wall_Schedule_Classic_Review_6departments_(Week_${formatDate(
+  const rotaFileName = `csv/Wall_Schedule_Classic_Review_6departments_(Week_${formatDate(
     currentWeekStart
   )}).csv`;
 
@@ -46,11 +59,19 @@ const Rota = () => {
 
         setEmployees(
           data
-            .slice(4) // Skip top irrelevant rows of CSV file
-            .map((row) => ({
-              name: formatName(row[0]),
-              shifts: row.slice(1, 8),
-            }))
+            .slice(4)
+            .filter((row) => row[0] && row[0] !== "Employee") // skip empty rows
+            .map((row) => {
+              const totalHours = parseFloat(row[8]) || 0;
+              const minHours = parseFloat(row[9]) || 0;
+
+              return {
+                name: formatName(row[0]),
+                shifts: row.slice(1, 8),
+                totalHours,
+                minHours,
+              };
+            })
         );
       } catch (error) {
         console.error(error);
@@ -93,8 +114,8 @@ const Rota = () => {
       <h1>Rota</h1>
 
       <section className={styles.wipWarning}>
-        ⚠️ Work in progress. Don't rely on me. Continue to use Logile and only
-        use me as a reference. ⚠️
+        ⚠️ Work in progress. Don't rely on me. Continue to use Logile to see
+        your own shifts. Only use me as a reference. ⚠️
       </section>
 
       <section>
@@ -122,6 +143,24 @@ const Rota = () => {
         </Form>
       </section>
 
+      {selectedEmp &&
+        (() => {
+          const emp = employees.find((e) => e.name === selectedEmp);
+          if (!emp) return null;
+
+          return (
+            <section className={styles.hoursSummary}>
+              <div>
+                <strong>Contract hours: </strong> {emp.minHours.toFixed(2)}
+              </div>
+              <div>
+                <strong>Total hours: </strong>
+                {emp.totalHours.toFixed(2)}
+              </div>
+            </section>
+          );
+        })()}
+
       {dayHeaders.map((day, dayIndex) => {
         const shifts = employees
           .filter((e) => !selectedEmp || e.name === selectedEmp)
@@ -141,7 +180,7 @@ const Rota = () => {
 
         if (!shifts.length)
           return (
-            <section key={day}>
+            <section key={day} className={styles.noShiftDay}>
               <h2>{day}</h2>
               <span>No shift today</span>
             </section>
@@ -151,13 +190,64 @@ const Rota = () => {
           <section key={day}>
             <h2>{day}</h2>
             <table className={styles.dayTable}>
+              {/* <tbody>
+                {shifts.map(({ name, shift, start }, i) => {
+                  const isBaker = bakers.includes(name);
+                  const isSunday = day.startsWith("Sun");
+                  const isISB =
+                    isBaker &&
+                    (start === 360 ||
+                      (isSunday && (start === 480 || start === 540)));
+
+                  return (
+                    <tr key={i}>
+                      <td className={styles.nameTd}>{name}</td>
+                      <td className={styles.shiftTimeTd}>
+                        {isISB && <strong>ISB</strong>}
+                        {teamLeaders.includes(name) && <strong>TL</strong>}
+                        {storeManager === name && <strong>SM</strong>} {shift}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody> */}
+
               <tbody>
-                {shifts.map(({ name, shift }, i) => (
-                  <tr key={i}>
-                    <td className={styles.nameTd}>{name}</td>
-                    <td className={styles.shiftTimeTd}>{shift}</td>
-                  </tr>
-                ))}
+                {shifts.map(({ name, shift, start }, i) => {
+                  // Find the team member's roles from the team array
+                  const member = team.find((m) => m.name === name);
+                  const roles = member?.roles || [];
+
+                  // Role checks
+                  const isBaker = roles.includes("ISB");
+                  const isPO = roles.includes("PO");
+                  const isSunday = day.startsWith("Sun");
+                  const isISB =
+                    isBaker &&
+                    (start === 360 ||
+                      (isSunday && (start === 480 || start === 540)));
+
+                  return (
+                    <tr key={i}>
+                      <td className={styles.nameTd}>{name}</td>
+                      <td className={styles.shiftTimeTd}>
+                        {isISB && (
+                          <Badge className={styles.isbBadge}>ISB</Badge>
+                        )}{" "}
+                        {roles.includes("TL") && (
+                          <Badge className={styles.tlBadge}>TL</Badge>
+                        )}{" "}
+                        {roles.includes("SM") && (
+                          <Badge className={styles.smBadge}>SM</Badge>
+                        )}{" "}
+                        {!isISB && isPO && (
+                          <Badge className={styles.poBadge}>PO</Badge>
+                        )}{" "}
+                        {shift}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </section>

@@ -12,6 +12,19 @@
   margin-top: 16px;
 }
 
+.hoursSummary {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--primary-color);
+
+  border: none;
+}
+
+.hoursSummary div,
+.hoursSummary div strong {
+  color: white;
+}
+
 .dayTable {
   width: 100%;
 }
@@ -30,4 +43,24 @@
 
 .shiftTimeTd {
   text-align: right;
+}
+
+.noShiftDay {
+  background-color: #ebebeb;
+}
+
+span.isbBadge {
+  background-color: #e09f63 !important;
+}
+
+span.poBadge {
+  background-color: #e40046 !important;
+}
+
+span.tlBadge {
+  background-color: #464d6e !important;
+}
+
+span.smBadge {
+  background-color: #1e44ec !important;
 }
