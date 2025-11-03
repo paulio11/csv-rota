@@ -190,28 +190,6 @@ const Rota = () => {
           <section key={day}>
             <h2>{day}</h2>
             <table className={styles.dayTable}>
-              {/* <tbody>
-                {shifts.map(({ name, shift, start }, i) => {
-                  const isBaker = bakers.includes(name);
-                  const isSunday = day.startsWith("Sun");
-                  const isISB =
-                    isBaker &&
-                    (start === 360 ||
-                      (isSunday && (start === 480 || start === 540)));
-
-                  return (
-                    <tr key={i}>
-                      <td className={styles.nameTd}>{name}</td>
-                      <td className={styles.shiftTimeTd}>
-                        {isISB && <strong>ISB</strong>}
-                        {teamLeaders.includes(name) && <strong>TL</strong>}
-                        {storeManager === name && <strong>SM</strong>} {shift}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody> */}
-
               <tbody>
                 {shifts.map(({ name, shift, start }, i) => {
                   // Find the team member's roles from the team array
